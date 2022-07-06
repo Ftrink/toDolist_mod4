@@ -1,53 +1,30 @@
 // variables html
 container = document.querySelector('.container');
 input_principal = document.querySelector('.input');
-
-//creating elements   <=======================>
-let input_agrega = document.createElement('input');
-let padlock_btn = document.createElement('button');
-let trash_btn = document.createElement('button');
-
-//input
-input_agrega.type = 'text';
-input_agrega.classList.add('item-input');
-input_agrega.disabled = true;
-container.parentNode.appendChild(input_agrega);
-input_agrega.value = 'Regar las plantas'
-
-//buttons
-padlock_btn.classList.add('boton-editar');
-padlock_btn.innerHTML = '<i class="fa-solid fa-lock">';
-input_agrega.parentNode.appendChild(padlock_btn);
-trash_btn.classList.add('boton-remover');
-trash_btn.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
-input_agrega.parentNode.appendChild(trash_btn);
-// <===============================>
-
-//valor de input principal
-const nueva_tarea = input_principal.value.trim();
+boton_agregar = document.querySelector('.boton-agregar')
 
 // crear classItem
 class Item {
-  constructor(nueva_tarea) {
-    this.crearDiv(nueva_tarea)
+  constructor(nuevaTarea) {
+    this.crearDiv(nuevaTarea)
   }
-  crearDiv() {
+  crearDiv(nuevaTarea) {
+
+    //creating ... -input
     const inputItem = document.createElement('input')
     inputItem.setAttribute('type', 'text')
     inputItem.disabled = true
     inputItem.classList.add('item-input')
-    inputItem.value = nueva_tarea
-
-    console.log('creando ...', inputItem);
+    inputItem.value = nuevaTarea
 
     //div
-    const div_item = document.createElement('div')
-    div_item.classList.add('Item')
+    const divs_item = document.createElement('div')
+    divs_item.classList.add('Item')
 
     // btn editar
     let botonEditar = document.createElement('button');
-    botonEditar.classList.add('boton-editar');
     botonEditar.innerHTML = '<i class="fa-solid fa-lock">';
+    botonEditar.classList.add('boton-editar');
 
     //btn removeeer
     let botonRemover = document.createElement('button');
@@ -55,13 +32,48 @@ class Item {
     botonRemover.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
 
     //agregar elementos a la lista
-    inputItem.parentNode.appendChild(botonEditar)
-    inputItem.parentNode.appendChild(botonRemover)
-    div_item.parentNode.appendChild(inputItem)
-    container.parentNode.appendChild(div_item)
-    
+    divs_item.appendChild(inputItem)
+    divs_item.appendChild(botonEditar)
+    divs_item.appendChild(botonRemover)
+    container.appendChild(divs_item);
+
+    //eventos botones edit
+    botonEditar.addEventListener('click', function () {
+      if (inputItem.disabled == true) {
+        botonEditar.innerHTML = '<i class="fas fa-lock-open"></i>';
+        inputItem.disabled = !true
+      } else {
+        inputItem.disabled = !false
+        botonEditar.innerHTML = '<i class="fa-solid fa-lock">'
+      }
+    })
+
+    //remove
+    botonRemover.addEventListener('click', function () {
+      container.removeChild(divs_item)
+
+    })
 
   }
-}
-  
-// const stein = new Item();
+};
+
+//check input
+function chequearInput() {
+  if (input_principal.value == '') {
+    return
+  } else {
+    const res = new Item(input_principal.value.trim());
+    input_principal.value = '';
+    // return res
+  }
+};
+
+boton_agregar.addEventListener('click', function () {
+  chequearInput()
+});
+
+
+// debugger
+// console.log('creando ...');
+const stein2 = new Item()
+const stein3 = new Item()
